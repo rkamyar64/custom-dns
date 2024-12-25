@@ -14,6 +14,8 @@ DNS="178.22.122.100,185.51.200.2"
 # 403.online DNS
 #DNS="10.202.10.202,10.202.10.102" 
 
+DEVICE=$(nmcli -t -f NAME,DEVICE con show | grep ${NETWORK}  | sed 's/:.*//')
+	
 # Function to turn off network
 turn_off_network() {
     echo -e "${RED}Turning off network interfaces...${NC}"
@@ -27,17 +29,18 @@ turn_off_network() {
 # Function to set DNS to auto
 set_dns_to_auto() {
     echo -e "Checking current DNS configuration..."
-	IGNORE_AUTO_DNS=$(nmcli con show ${NETWORK} | grep -i ipv4.ignore-auto-dns | awk '{print $2}')
+
+	IGNORE_AUTO_DNS=$(nmcli con show ${DEVICE} | grep -i ipv4.ignore-auto-dns | awk '{print $2}')
 
 	if [[ "$IGNORE_AUTO_DNS" == "yes" ]]; then
 	    # Set DNS to automatic by modifying the connection settings
-	     nmcli con mod ${NETWORK} ipv4.dns ""
-	     nmcli con mod ${NETWORK} ipv4.ignore-auto-dns no
+	     nmcli con mod "${DEVICE}" ipv4.dns ""
+	     nmcli con mod "${DEVICE}" ipv4.ignore-auto-dns no
 	    echo -e "${PURPLE}DNS set to automatic.${NC}"
 	else
 	    # Set DNS to manual and apply custom DNS
-	     nmcli con mod ${NETWORK} ipv4.ignore-auto-dns yes
-	     nmcli con mod ${NETWORK} ipv4.dns "${DNS}"
+	     nmcli con mod "${DEVICE}" ipv4.ignore-auto-dns yes
+	     nmcli con mod "${DEVICE}" ipv4.dns "${DNS}"
 	    echo -e "${PURPLE}Custom DNS set.${NC}"
 	fi
 }
