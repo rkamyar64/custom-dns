@@ -22,25 +22,40 @@ This Bash script is designed to manage network configurations, particularly focu
 ## Usage
 
 1. Clone or copy the script to your system.
+
 2. **Find Your Network Interface Name**:
    - Run the following command to list your network interfaces:
      ```bash
      ip link show
      ```
    - Identify your active network interface (e.g., `eno1`, `eth0`, or `wlan0`).
-   - Update the `NETWORK` variable in the script if necessary.
 
-3. **Edit the Ubuntu DNS Configuration**:
-   - Open the Ubuntu DNS configuration file:
+3. **Edit the Script**:
+   - Open the `ubuntu-dns.sh` file in a text editor:
      ```bash
-     sudo nano /etc/NetworkManager/NetworkManager.conf
+     nano ubuntu-dns.sh
      ```
-   - Add your network interface name (`eno1`) under the appropriate section, if required.
+   - Locate the `NETWORK` variable at the top of the script:
+     ```bash
+     NETWORK="eno1"
+     ```
+   - Replace `eno1` with your network interface name and save the file.
 
-4. Select or modify the DNS values as needed by uncommenting or editing the DNS variable in the script.
+4. **Run the Script**:
+   - Grant execute permissions to the script:
+     ```bash
+     chmod +x ubuntu-dns.sh
+     ```
+   - Run the script with `sudo`:
+     ```bash
+     sudo ./ubuntu-dns.sh
+     ```
 
-5. Run the script:
-   ```bash
-   chmod +x script.sh
-   sudo ./script.sh
+## Example Output
+
+```bash
+Turning off network interfaces...
+Checking current DNS configuration...
+Custom DNS set.
+Turning on network interfaces...
 
